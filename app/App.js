@@ -22,6 +22,8 @@ import MainScreen from './views/MainScreen'
 import  CommonChatRoom from './views/CommonChatRoom'
 import  PersonalChats from './views/PersonalChats'
 
+import OnlineList from './views/OnlineList'
+
 
 const ChatArea = TabNavigator({
 
@@ -37,6 +39,13 @@ const ChatArea = TabNavigator({
     navigationOptions: {
       tabBarLabel: 'Personal Chats',
       tabBarIcon: () => <Icon name="chat-bubble-outline" size={30}/>
+    }
+  },
+  OnlineList: {
+    screen:OnlineList,
+    navigationOptions: {
+      tabBarLabel: 'Online List',
+      tabBarIcon: () => <Icon name="people" size={30}/>
     }
   }
 

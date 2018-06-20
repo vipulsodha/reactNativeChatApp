@@ -37,9 +37,12 @@ export default class MainScreen extends Component<Props> {
         nameValue: ""
     }
 
-
     onSubmit = (e) => {
         // this.props.navigation.dispatch(resetAction);
+
+        if (this.state.nameValue === "") {
+            return;
+        }
 
         this.props.navigation.navigate("CommonChatRoom");
 
@@ -47,22 +50,21 @@ export default class MainScreen extends Component<Props> {
 
     handleTextChange = (nameValue) => {
 
+
         this.setState((prevState) => ({
-           ...prevState, nameValue
+           nameValue
         }));
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <TextInput style={styles.inputBox} value={this.state.nameValue}  onChangeText={this.handleTextChange} placeholder="Enter Name"/>
+                <TextInput multiline={true} style={styles.inputBox} value={this.state.nameValue}  onChangeText={this.handleTextChange} placeholder="Enter Name"/>
                 <SubmitButton onPress = {this.onSubmit}/>
             </View>
         );
     }
 }
-
-
 
 const styles = StyleSheet.create({
     container: {
@@ -79,8 +81,8 @@ const styles = StyleSheet.create({
         padding: 5
     },
     submitBtn: {
-        marginRight:40,
-        marginLeft:40,
+
+        marginTop:20,
         padding:10,
         alignItems:'center',
         backgroundColor:"purple",

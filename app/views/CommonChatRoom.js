@@ -33,6 +33,35 @@ export default class CommonChatRoom extends React.Component {
         messages :[{message: "hello", sent: false}, {message:"hi", sent: false}]
     };
 
+    constructor() {
+
+        super();
+
+        var uri = 'ws://127.0.0.1:8088';
+
+        this.socket = new WebSocket(uri);
+
+        this.socket.onerror = function () {
+            alert("error");
+        }
+
+        this.socket.onclose = function () {
+            alert("Close");
+        }
+    }
+
+    messageReceived = (e) => {
+
+        this.setState((state) => ({
+            messages: [...state.messages, {sent: false, message: e.data}]
+        }))
+    }
+
+    componentDidMount() {
+
+        this.socket.onmessage = this.messageReceived;
+    }
+
     onChangeInput = text => {
         this.setState({ inputValue: text });
     };
@@ -55,6 +84,8 @@ export default class CommonChatRoom extends React.Component {
             messages: [...state.messages, {sent: true, message: this.state.inputValue}],
             inputValue:""
         }))
+
+        this.socket.send(this.state.inputValue);
     }
 
     render() {
@@ -63,7 +94,6 @@ export default class CommonChatRoom extends React.Component {
                 <FlatList
                     data={this.state.messages}
                     renderItem={this.renderItem}
-
                 />
                 <KeyboardAvoidingView behavior="padding" keyboardVerticalOffset={64}>
                     <View style={styles.footer}>
@@ -89,8 +119,6 @@ const styles = StyleSheet.create({
         padding:5,
         flex:1,
         backgroundColor:"#bdc3c7",
-
-
     },
     container: {
         flex: 1,
@@ -103,7 +131,6 @@ const styles = StyleSheet.create({
         backgroundColor:"#e67e22",
         padding:5,
         margin:5,
-
     },
     sendButton : {
         padding:5,
@@ -117,7 +144,7 @@ const styles = StyleSheet.create({
         margin:5,
         borderRadius: 5,
         maxWidth:300,
-        minWidth:100,
+        minWidth:50,
         alignSelf:'flex-end'
 
     },
@@ -128,7 +155,7 @@ const styles = StyleSheet.create({
         margin:5,
         borderRadius: 5,
         maxWidth:300,
-        minWidth:100,
+        minWidth:50,
         alignSelf:'flex-start'
     }
 });
